@@ -1,2 +1,2 @@
 Git is good
-Github is awesome
+GitHub is awesome
