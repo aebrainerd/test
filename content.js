@@ -1,7 +1,7 @@
 (function () {
   const DEFAULT_SETTINGS = {
     top_k: 5,
-    model: 'gpt-3.5-turbo-instruct'
+    model: 'Qwen/Qwen1.5-4B'
   };
 
   let settings = { ...DEFAULT_SETTINGS };
@@ -167,11 +167,7 @@
     const banner = container.querySelector('.te-banner');
     if (!banner) return;
     banner.style.display = 'block';
-    if (code === 'missing_api_key') {
-      banner.textContent = 'Configure API key in extension options to enable entropy overlays.';
-    } else {
-      banner.textContent = 'Unable to score tweet (API unavailable).';
-    }
+    banner.textContent = 'Unable to score tweet (local API unavailable).';
     const body = container.querySelector('.te-body');
     if (body) body.textContent = '';
   }

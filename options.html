@@ -42,18 +42,10 @@
   </head>
   <body>
     <h1>Tweet Entropy Overlay Options</h1>
-    <label>
-      API Base URL
-      <input type="text" id="apiBase" placeholder="https://api.openai.com" />
-      <div class="hint">Include protocol. Example: https://api.openai.com</div>
-    </label>
-    <label>
-      API Key
-      <input type="password" id="apiKey" placeholder="sk-..." />
-    </label>
+    <p class="hint">The extension now talks to the bundled local Qwen backend at <code>http://localhost:8000</code>. Configure the model name and top-k only.</p>
     <label>
       Model
-      <input type="text" id="model" placeholder="gpt-3.5-turbo-instruct" />
+      <input type="text" id="model" placeholder="Qwen/Qwen1.5-4B" />
     </label>
     <label>
       Top-k (for logprobs)

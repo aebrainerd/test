@@ -1,6 +1,6 @@
 # Tweet Entropy Overlay (Chrome MV3 Extension)
 
-Overlay per-token entropy and surprise metrics on Tweets (X) using any OpenAI-compatible API that returns logprobs with echo enabled.
+Overlay per-token entropy and surprise metrics on Tweets (X) using the bundled local Qwen backend that returns logprobs with echo enabled.
 
 ## Features
 
@@ -9,27 +9,19 @@ Overlay per-token entropy and surprise metrics on Tweets (X) using any OpenAI-co
 - Lower-bound entropy badge (because only top-k mass is available).
 - Per-Tweet collapse toggle plus mini legend.
 - Session cache to avoid re-fetching the same Tweet while browsing.
-- Options page for API base URL, key, model, and top-k.
-- Graceful banners for missing API keys or API failures.
+- Options page for model and top-k (defaults to the local Qwen backend at `http://localhost:8000`).
+- Graceful banners for local API failures.
 
 ## Installation
 
 1. `git clone` this repository and open `chrome://extensions` in Chrome.
 2. Enable **Developer mode**.
 3. Click **Load unpacked** and select the repository folder.
-4. Open the extension **Options** and enter your API base URL, API key, model, and desired top-k.
+4. Start the local backend (see below); open the extension **Options** and set the model (defaults to `Qwen/Qwen1.5-4B`) and desired top-k.
 
 ## API configuration
 
-The extension expects an OpenAI-compatible `/v1/completions` endpoint that supports `logprobs` and `echo`.
-
-Example command for a local vLLM server:
-
-```
-vllm serve <model_name> --port 8000 --api-key token --enable-logprobs
-```
-
-Then set `API Base URL` to `http://localhost:8000` and `Model` to your deployed model name.
+The extension always calls the bundled backend at `http://localhost:8000/v1/completions` and does not require an API key. You can change the model name from the Options page if you run a different local checkpoint.
 
 ## Built-in local backend (Qwen ~4B)
 
@@ -64,8 +56,6 @@ API behavior:
 - Only supports `max_tokens=0` and `echo=true` requests to score prompt tokens.
 - Returns `choices[0].logprobs.tokens`, `token_logprobs`, and `top_logprobs` in OpenAI-compatible format.
 
-Point the extension’s `API Base URL` to `http://localhost:8000` and use any model string accepted by the server.
-
 The request payload is:
 
 ```json
@@ -89,6 +79,6 @@ Responses should include `choices[0].logprobs.tokens`, `token_logprobs`, and `to
 
 ## Troubleshooting
 
-- **No overlays and a banner appears:** Ensure the API key is set in Options.
-- **API errors:** Check the base URL, model name, and that your endpoint supports `logprobs`+`echo`.
+- **No overlays and a banner appears:** Verify the local backend is running on `http://localhost:8000`.
+- **API errors:** Confirm the backend process is healthy and the selected model name matches what the server loaded.
 - **Slow overlays:** Reduce `top-k` or scroll slowly to give the model time to respond.

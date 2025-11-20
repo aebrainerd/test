@@ -1,15 +1,13 @@
 const DEFAULT_SETTINGS = {
-  apiBase: 'https://api.openai.com',
-  apiKey: '',
-  model: 'gpt-3.5-turbo-instruct',
+  apiBase: 'http://localhost:8000',
+  model: 'Qwen/Qwen1.5-4B',
   top_k: 5
 };
 
 async function getSettings() {
-  const stored = await chrome.storage.local.get(['apiBase', 'apiKey', 'model', 'top_k']);
+  const stored = await chrome.storage.local.get(['model', 'top_k']);
   return {
-    apiBase: stored.apiBase || DEFAULT_SETTINGS.apiBase,
-    apiKey: stored.apiKey || DEFAULT_SETTINGS.apiKey,
+    apiBase: DEFAULT_SETTINGS.apiBase,
     model: stored.model || DEFAULT_SETTINGS.model,
     top_k: typeof stored.top_k === 'number' ? stored.top_k : DEFAULT_SETTINGS.top_k
   };
@@ -24,7 +22,7 @@ async function setInSession(key, value) {
   await chrome.storage.session.set({ [key]: value });
 }
 
-async function callModel(apiBase, apiKey, model, prompt, topK) {
+async function callModel(apiBase, model, prompt, topK) {
   const body = {
     model,
     prompt,
@@ -38,8 +36,7 @@ async function callModel(apiBase, apiKey, model, prompt, topK) {
   const resp = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   });
@@ -81,9 +78,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function handleScoreRequest(message) {
   const settings = await getSettings();
-  if (!settings.apiKey) {
-    return { error: 'missing_api_key' };
-  }
 
   const sessionKey = `${message.cacheKey || ''}|${settings.model}|${settings.top_k}`;
   const cached = await getFromSession(sessionKey);
@@ -91,7 +85,7 @@ async function handleScoreRequest(message) {
     return { ok: true, data: cached };
   }
 
-  const data = await callModel(settings.apiBase, settings.apiKey, settings.model, message.text, settings.top_k);
+  const data = await callModel(settings.apiBase, settings.model, message.text, settings.top_k);
   const normalized = normalizeResponse(data);
   await setInSession(sessionKey, normalized);
   return { ok: true, data: normalized };
