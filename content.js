@@ -192,7 +192,7 @@
       if (dist && dist.topk && dist.topk.length) {
         const norm = normalizeTopk(dist.topk);
         const entropy = computeEntropy(norm);
-        const surprise = computeSurprise(norm, data.tokens[idx + 1]);
+        const surprise = computeSurprise(norm, data.tokens[idx]);
         span.style.background = entropyColor(entropy);
         span.dataset.tooltip = buildTooltip(entropy, surprise, norm);
       }

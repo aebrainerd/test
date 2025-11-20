@@ -58,7 +58,7 @@ function normalizeResponse(data) {
   const tokens = choice.logprobs.tokens || [];
   const topLogprobs = choice.logprobs.top_logprobs || [];
   const per_pos = tokens.map((_, idx) => {
-    const dist = topLogprobs[idx + 1];
+    const dist = topLogprobs[idx];
     if (!dist) return null;
     const topk = Object.entries(dist).map(([token, logp]) => ({ token, logp }));
     return { topk };
