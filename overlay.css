@@ -1,0 +1,103 @@
+.te-overlay {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e6e6e6;
+  backdrop-filter: blur(4px);
+  position: relative;
+}
+
+.te-overlay .te-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.te-overlay .te-toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e6e6e6;
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.te-overlay.te-collapsed .te-body,
+.te-overlay.te-collapsed .te-legend,
+.te-overlay.te-collapsed .te-pill {
+  display: none;
+}
+
+.te-overlay .te-banner {
+  background: rgba(255, 0, 0, 0.15);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.te-overlay .te-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.te-overlay .te-gradient {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, hsl(240, 80%, 75%), hsl(0, 80%, 75%));
+}
+
+.te-overlay .te-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.te-overlay .te-token {
+  position: relative;
+  padding: 0 2px;
+  border-radius: 4px;
+  cursor: default;
+  color: #111;
+  white-space: pre;
+}
+
+.te-overlay .te-token:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  transform: translateY(4px);
+  background: rgba(0, 0, 0, 0.85);
+  color: #f0f0f0;
+  padding: 6px;
+  border-radius: 6px;
+  white-space: pre;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 160px;
+}
+
+.te-overlay .te-pill {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #ccc;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 6px;
+  border-radius: 12px;
+  align-self: flex-start;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
