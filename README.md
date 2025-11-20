@@ -31,6 +31,41 @@ vllm serve <model_name> --port 8000 --api-key token --enable-logprobs
 
 Then set `API Base URL` to `http://localhost:8000` and `Model` to your deployed model name.
 
+## Built-in local backend (Qwen ~4B)
+
+This repository also ships a minimal OpenAI-compatible scoring backend that runs a Qwen base model locally and exposes `/v1/completions`.
+
+Requirements:
+
+- Python 3.10+
+- Enough RAM/GPU memory for the selected model (default: `Qwen/Qwen1.5-4B`, roughly 8–10 GB in fp16; CPU fp32 works but is slower)
+
+Install dependencies:
+
+```
+python -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+```
+
+Start the server (defaults to `Qwen/Qwen1.5-4B`):
+
+```
+uvicorn backend.server:app --host 0.0.0.0 --port 8000
+```
+
+Environment variables:
+
+- `QWEN_MODEL`: override the model name (e.g., `Qwen/Qwen1.5-1.8B` to reduce memory).
+- `QWEN_DEVICE_MAP`: passed to `transformers` `device_map` (default `auto`).
+
+API behavior:
+
+- Only supports `max_tokens=0` and `echo=true` requests to score prompt tokens.
+- Returns `choices[0].logprobs.tokens`, `token_logprobs`, and `top_logprobs` in OpenAI-compatible format.
+
+Point the extension’s `API Base URL` to `http://localhost:8000` and use any model string accepted by the server.
+
 The request payload is:
 
 ```json
