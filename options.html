@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tweet Entropy Overlay Options</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Roboto, sans-serif;
+        margin: 20px;
+        background: #0f1419;
+        color: #e6e6e6;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        box-sizing: border-box;
+        border-radius: 4px;
+        border: 1px solid #444;
+        background: #0b0f14;
+        color: #e6e6e6;
+      }
+      button {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: none;
+        background: #1d9bf0;
+        color: #fff;
+        cursor: pointer;
+      }
+      .hint {
+        font-size: 12px;
+        color: #b0b0b0;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tweet Entropy Overlay Options</h1>
+    <p class="hint">The extension now talks to the bundled local Qwen backend at <code>http://localhost:8000</code>. Configure the model name and top-k only.</p>
+    <label>
+      Model
+      <input type="text" id="model" placeholder="Qwen/Qwen1.5-4B" />
+    </label>
+    <label>
+      Top-k (for logprobs)
+      <input type="number" id="top_k" min="1" max="50" />
+    </label>
+    <button id="save">Save</button>
+    <div id="status" class="hint"></div>
+    <script src="options.js"></script>
+  </body>
+</html>
