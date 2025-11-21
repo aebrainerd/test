@@ -87,16 +87,11 @@ def build_response(prompt: str, model_name: str, top_k: int) -> CompletionRespon
     top_logprobs: List[Optional[Dict[str, float]]] = []
 
     for i, token_id in enumerate(input_ids):
-        if i == 0:
-            token_logprobs.append(None)
-            top_logprobs.append(None)
-            continue
-
-        prev_logprobs = logprobs[i - 1]
-        token_logprob = prev_logprobs[token_id].item()
+        current_logprobs = logprobs[i]
+        token_logprob = current_logprobs[token_id].item()
         token_logprobs.append(token_logprob)
 
-        top_values, top_indices = torch.topk(prev_logprobs, k=min(top_k, prev_logprobs.shape[-1]))
+        top_values, top_indices = torch.topk(current_logprobs, k=min(top_k, current_logprobs.shape[-1]))
         top_dict = {
             tokenizer.convert_ids_to_tokens(idx.item()): val.item()
             for val, idx in zip(top_values, top_indices)
